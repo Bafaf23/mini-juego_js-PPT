@@ -1,1 +1,42 @@
 @import "tailwindcss";
+
+table {
+  border-collapse: collapse; /* Para que no haya doble borde */
+  border-radius: 10px; /* Bordes redondeados para toda la tabla */
+  overflow: hidden; /* Oculta el desbordamiento fuera del borde */
+  border: 1px solid #ccc; /* Borde principal de la tabla */
+}
+
+thead {
+  background-color: transparent; /* Color de fondo para la cabecera */
+  /* No necesita border-radius aquí, la tabla lo maneja */
+}
+
+th {
+  border-collapse: separate;
+  padding: 10px;
+  border: none; /* Asegura que las celdas no tengan bordes propios que interfieran */
+  background-color: #f0f0f0;
+}
+
+/* Para la primera y última celda del thead si quieres radios específicos */
+th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+td {
+  border-collapse: separate;
+  padding: 5px;
+  text-align: center;
+  background-color: #fafafa;
+  border-bottom: 1px solid rgb(224, 217, 217);
+}
+
+/* Opcional: para el body si necesitas más control */
+/* tbody tr:first-child td:first-child { ... } */
