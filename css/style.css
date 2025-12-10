@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 table {
   border-collapse: collapse; /* Para que no haya doble borde */
   border-radius: 10px; /* Bordes redondeados para toda la tabla */
@@ -31,11 +33,21 @@ th:last-child {
 }
 
 td {
-  border-collapse: separate;
-  padding: 5px;
+  border-collapse: collapse;
+  padding: 6px;
   text-align: center;
   background-color: #fafafa;
   border-bottom: 1px solid rgb(224, 217, 217);
+}
+
+td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* Opcional: para el body si necesitas más control */
