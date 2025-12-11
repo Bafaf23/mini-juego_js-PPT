@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 table {
   border-collapse: collapse; /* Para que no haya doble borde */
   border-radius: 10px; /* Bordes redondeados para toda la tabla */
