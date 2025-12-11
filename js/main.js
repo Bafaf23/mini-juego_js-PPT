@@ -118,26 +118,22 @@ function win(userChoice, computerChoice) {
  * @param {string} userChoice La opción seleccionada por el usuario.
  * @param {string} computerChoice La opción seleccionada por la computadora.
  */
-function updateTabla(resul, userChoice, computerChoice) {
+function updateTabla() {
   const table = document.getElementById("table");
 
-  if (!table) {
-    console.error("Error: No se encontró el elemento con ID 'tabla'.");
-    return;
-  }
+  let historialG = localStorage.getItem(`historalJuego`);
+  let historial = JSON.parse(historialG || `[]`);
 
-  setTimeout(() => {
-    let marcador = document.getElementById(`${romScore}`);
-    marcador.classList.add(`text-orange-500`);
-  }, 100);
+  table.innerHTML = "";
 
-  let newRow = document.createElement("tr");
-
-  newRow.innerHTML = `<td id="${romScore}">${romScore}</td>
-                     <td>${userChoice}</td>
-                     <td>${computerChoice}</td>
-                     <td class="${resul}">${resul}</td>`;
-  table.appendChild(newRow);
+  historial.forEach((partida) => {
+    let newRow = document.createElement("tr");
+    newRow.innerHTML = `<td id="${partida.id}">${partida.ronda}</td>
+                     <td>${partida.movimiento1}</td>
+                     <td>${partida.movimiento2}</td>
+                     <td class="${partida.resultado}">${partida.resultado}</td>`;
+    table.appendChild(newRow);
+  });
 
   let ganadores = document.querySelectorAll(".Ganaste");
   let perdedores = document.querySelectorAll(".Perdiste");
@@ -171,6 +167,30 @@ function traductor(userChoice, computerChoice) {
   if (computerChoice == `paper`) return `Papel`;
   if (computerChoice == `rock`) return `Piedra`;
 }
+/**
+ * funcion para guardar el historial de juego
+ *
+ * @param {*} resul
+ * @param {*} traductorPlayer1
+ * @param {*} traductorPlayer2
+ */
+function salveData(resul, traductorPlayer1, traductorPlayer2) {
+  let nuevaParida = {
+    resultado: resul,
+    movimiento1: traductorPlayer1,
+    movimiento2: traductorPlayer2,
+    ronda: romScore,
+    id: Date.now(),
+  };
+  const historialGuardado = localStorage.getItem("historalJuego");
+
+  const historialData = JSON.parse(historialGuardado || `[]`);
+
+  historialData.push(nuevaParida);
+
+  localStorage.setItem("historalJuego", JSON.stringify(historialData));
+  console.log(`Historial actualizado y guardado ✅`);
+}
 
 /**
  *funcion encargada de inicar el juego
@@ -181,6 +201,16 @@ function playGame(userChoice) {
   const computerChoice = getComputerChoice();
 
   let result = win(userChoice, computerChoice);
+  let traductorPlayer1 = traductor(userChoice);
+  let traductorPlayer2 = traductor(computerChoice);
 
-  updateTabla(result, traductor(userChoice), traductor(computerChoice));
+  salveData(result, traductorPlayer1, traductorPlayer2);
+  updateTabla();
 }
+
+let btnR = document.getElementById("reiniciar");
+
+btnR.addEventListener(`click`, () => {
+  localStorage.removeItem(`historalJuego`);
+  updateTabla();
+});
