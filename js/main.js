@@ -32,17 +32,33 @@
 /* displayMensaje */
 const resultMessage = document.getElementById("result-message");
 
-/* marcadores de rondas
- */
-let userScore = 0;
-let compScore = 0;
-let romScore = 0;
-let empScore = 0;
-
 const userScoreSpam = document.getElementById("user-score");
 const compScoreSpam = document.getElementById("comp-score");
 const romScoreSpam = document.getElementById("rom-score");
 const empScoreSpam = document.getElementById("emp-score");
+
+/**
+ * Define las claves de almacenamiento local para evitar errores de escritura.
+ * ESTO FALTABA EN TU CÓDIGO ANTERIOR Y HACÍA QUE FALLARA.
+ */
+const STORAGE_KEYS = {
+  STATS: "juegoEstadisticas",
+  HISTORY: "historialJuego",
+  THEME: "themePreference",
+};
+
+/**
+ * Objeto que mantiene el estado actual del juego.
+ * Se inicializa con valores por defecto que se sobrescribirán desde localStorage.
+ */
+
+let gameState = {
+  userScore: 0,
+  compScore: 0,
+  romScore: 0,
+  empScore: 0,
+  history: [],
+};
 
 /**
  * Jugada de de la computadora
@@ -76,12 +92,7 @@ function covertEmoji(choice) {
  */
 
 function win(userChoice, computerChoice) {
-  romScore++;
-
   if (userChoice === computerChoice) {
-    empScore++;
-    romScoreSpam.innerHTML = romScore;
-    empScoreSpam.innerHTML = empScore;
     resultMessage.innerHTML = `${covertEmoji(
       userChoice
     )} es igual a ${covertEmoji(computerChoice)}. ¡Empate! 🤝`;
@@ -94,24 +105,26 @@ function win(userChoice, computerChoice) {
     (userChoice === `paper` && computerChoice === `rock`) ||
     (userChoice === `scissors` && computerChoice === `paper`)
   ) {
-    userScore++;
-    romScoreSpam.innerHTML = romScore;
-    userScoreSpam.innerHTML = userScore;
     resultMessage.innerHTML = `${covertEmoji(
       userChoice
     )} le gana a ${covertEmoji(computerChoice)}. Gansates. 🎉`;
     return `Ganaste`;
   } else {
-    compScore++;
-    romScoreSpam.innerHTML = romScore;
-    compScoreSpam.innerHTML = compScore;
     resultMessage.innerHTML = `${covertEmoji(
       computerChoice
     )} le gana a ${covertEmoji(userChoice)}. Perdiste. 😭`;
     return `Perdiste`;
   }
 }
-
+/**
+ * Función encargada de actualizar visualmente el marcador en el DOM.
+ */
+function updateMarcadores() {
+  userScoreSpam.innerHTML = gameState.userScore;
+  compScoreSpam.innerHTML = gameState.compScore;
+  romScoreSpam.innerHTML = gameState.romScore;
+  empScoreSpam.innerHTML = gameState.empScore;
+}
 /**
  * Añade una nueva fila de datos a la tabla de estadísticas del juego.
  *
@@ -121,14 +134,14 @@ function win(userChoice, computerChoice) {
 function updateTabla() {
   const table = document.getElementById("table");
 
-  let historialG = localStorage.getItem(`historalJuego`);
-  let historial = JSON.parse(historialG || `[]`);
+  const lastFive = gameState.history.slice(-5);
 
   table.innerHTML = "";
 
-  historial.forEach((partida) => {
+  lastFive.reverse().forEach((partida) => {
     let newRow = document.createElement("tr");
-    newRow.innerHTML = `<td id="${partida.id}">${partida.ronda}</td>
+
+    newRow.innerHTML = `<td id="${partida.id}" class="rond">${partida.ronda}</td>
                      <td>${partida.movimiento1}</td>
                      <td>${partida.movimiento2}</td>
                      <td class="${partida.resultado}">${partida.resultado}</td>`;
@@ -138,6 +151,11 @@ function updateTabla() {
   let ganadores = document.querySelectorAll(".Ganaste");
   let perdedores = document.querySelectorAll(".Perdiste");
   let empates = document.querySelectorAll(".Empate");
+  let rondas = document.querySelectorAll(".rond");
+
+  rondas.forEach((ronda) => {
+    ronda.classList.add("text-orange-500", "font-bold");
+  });
 
   empates.forEach((empate) => {
     empate.classList.add("text-purple-600", "font-bold");
@@ -169,27 +187,41 @@ function traductor(userChoice, computerChoice) {
 }
 /**
  * funcion para guardar el historial de juego
- *
- * @param {*} resul
- * @param {*} traductorPlayer1
- * @param {*} traductorPlayer2
  */
-function salveData(resul, traductorPlayer1, traductorPlayer2) {
-  let nuevaParida = {
-    resultado: resul,
-    movimiento1: traductorPlayer1,
-    movimiento2: traductorPlayer2,
-    ronda: romScore,
-    id: Date.now(),
-  };
-  const historialGuardado = localStorage.getItem("historalJuego");
+function salveData() {
+  localStorage.setItem(
+    STORAGE_KEYS.STATS,
+    JSON.stringify({
+      userScore: gameState.userScore,
+      compScore: gameState.compScore,
+      romScore: gameState.romScore,
+      empScore: gameState.empScore,
+    })
+  );
+  // Guardar historial (array)
+  localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(gameState.history));
+  console.log(`Estado del juego guardado en localStorage ✅`);
+}
 
-  const historialData = JSON.parse(historialGuardado || `[]`);
+/**
+ * Carga el estado completo del juego desde localStorage al iniciar la página.
+ */
+function loadGameState() {
+  const savedStats = localStorage.getItem(STORAGE_KEYS.STATS);
+  const savedHistory = localStorage.getItem(STORAGE_KEYS.HISTORY);
 
-  historialData.push(nuevaParida);
+  if (savedStats) {
+    const stats = JSON.parse(savedStats);
+    Object.assign(gameState, stats); // Sobrescribe las propiedades por defecto
+  }
 
-  localStorage.setItem("historalJuego", JSON.stringify(historialData));
-  console.log(`Historial actualizado y guardado ✅`);
+  if (savedHistory) {
+    gameState.history = JSON.parse(savedHistory);
+  }
+
+  // Actualizar la interfaz con los datos cargados
+  updateTabla();
+  updateMarcadores();
 }
 
 /**
@@ -199,18 +231,54 @@ function salveData(resul, traductorPlayer1, traductorPlayer2) {
  */
 function playGame(userChoice) {
   const computerChoice = getComputerChoice();
+  const result = win(userChoice, computerChoice);
 
-  let result = win(userChoice, computerChoice);
-  let traductorPlayer1 = traductor(userChoice);
-  let traductorPlayer2 = traductor(computerChoice);
+  gameState.romScore++;
+  if (result === `Ganaste`) {
+    gameState.userScore++;
+  } else if (result === `Perdiste`) {
+    gameState.compScore++;
+  } else {
+    gameState.empScore++;
+  }
 
-  salveData(result, traductorPlayer1, traductorPlayer2);
+  const newRoundData = {
+    resultado: result,
+    movimiento1: covertEmoji(userChoice),
+    movimiento2: covertEmoji(computerChoice),
+    ronda: gameState.romScore,
+    id: Date.now(), // ID único para la entrada
+  };
+
+  gameState.history.push(newRoundData);
+  salveData();
+
+  updateMarcadores();
   updateTabla();
 }
+
+// Carga el estado guardado cuando el script se ejecuta inicialmente
+document.addEventListener("DOMContentLoaded", (event) => {
+  loadGameState();
+});
 
 let btnR = document.getElementById("reiniciar");
 
 btnR.addEventListener(`click`, () => {
-  localStorage.removeItem(`historalJuego`);
+  // Restablecer el estado en memoria a valores por defecto
+  gameState = {
+    userScore: 0,
+    compScore: 0,
+    romScore: 0,
+    empScore: 0,
+    history: [],
+  };
+  // Limpiar TODAS las claves relevantes de localStorage (corregido para usar STORAGE_KEYS)
+  localStorage.removeItem(STORAGE_KEYS.STATS);
+  localStorage.removeItem(STORAGE_KEYS.HISTORY);
+
+  // Actualizar UI
+  updateMarcadores();
   updateTabla();
+  resultMessage.innerHTML = "Estadísticas reiniciadas. ¡Empieza de nuevo!";
 });

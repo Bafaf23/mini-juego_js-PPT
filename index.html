@@ -14,182 +14,151 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>Piedra, Papel o Tijera</title>
   </head>
-  <body class="bg-gray-100 p-5">
-    <header class="mb-3">
-      <div class="flex justify-end">
-        <button
-          id="theme-toggle"
-          type="button"
-          class="text-gray-500 :text-gray-400 hover:bg-gray-100 :hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 :focus:ring-gray-700 rounded-lg text-sm p-2.5"
-        >
-          <svg
-            id="theme-toggle--icon"
-            class="hidden w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-            ></path>
-          </svg>
-          <svg
-            id="theme-toggle-light-icon"
-            class="hidden w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-      </div>
-    </header>
-    <main class="flex flex-col gap-5 items-center h-full">
-      <!-- display gamer -->
-      <div
-        class="game-container bg-white border border-gray-200 p-10 rounded-md flex flex-col gap-5 shadow-md w-full"
-      >
-        <h1 class="font-bold text-4xl">Piedra, Papel o Tijera</h1>
-
+  <body class="bg-gray-100 p-5 h-svh">
+    <div class="flex flex-col justify-between h-full">
+      <main class="flex flex-col md:flex-row gap-5">
+        <!-- display gamer -->
         <div
-          class="score-board flex justify-between items-center p-1 border border-gray-300 rounded-2xl bg-gray-50"
+          class="game-container bg-white border border-gray-200 p-10 rounded-md flex flex-col gap-5 shadow-md w-full"
         >
-          <div class="flex items-center justify-evenly w-full">
-            <div class="score flex flex-col items-center">
-              <span id="user-score" class="text-3xl text-green-500">0</span>
-              <small>Tú</small>
-            </div>
-            <div class="score flex flex-col items-center">
-              <span id="comp-score" class="text-3xl text-red-500">0</span>
-              <small>Comp</small>
-            </div>
-            <div class="flex flex-col items-center">
-              <span id="emp-score" class="text-3xl text-purple-500">0</span>
-              <small>Emp</small>
-            </div>
-          </div>
+          <h1 class="font-bold text-4xl">Piedra, Papel o Tijera</h1>
+
           <div
-            class="score flex flex-col items-center border w-1/6 border-orange-400 rounded-xl bg-orange-200"
+            class="score-board flex justify-between items-center p-1 border border-gray-300 rounded-2xl bg-gray-50"
           >
-            <span id="rom-score" class="text-3xl text-orange-500">0</span>
-            <small>rondas</small>
-          </div>
-        </div>
-        <!-- display mensage -->
-        <div
-          id="result-message"
-          class="bg-gray-50 p-2 rounded-md border border-gray-200 text-center text-2xl"
-        >
-          ¡Haz tu jugada!
-        </div>
-        <!-- btns -->
-        <div class="choices flex gap-2 justify-center flex-wrap">
-          <button
-            id="rock"
-            class="p-6 border rounded-full border-gray-500 text-4xl hover:scale-110 cursor-pointer"
-            onclick="playGame('rock')"
-          >
-            🪨
-          </button>
-          <button
-            id="paper"
-            class="p-6 border rounded-full border-gray-500 text-4xl hover:scale-110 cursor-pointer"
-            onclick="playGame('paper')"
-          >
-            📄
-          </button>
-          <button
-            id="scissors"
-            class="p-6 border rounded-full :bg-gray-500 border-gray-500 text-4xl hover:scale-110 cursor-pointer"
-            onclick="playGame('scissors')"
-          >
-            ✂️
-          </button>
-        </div>
-
-        <p class="text-gray-500 text-center">
-          Elige tu arma para empezar el juego.
-        </p>
-      </div>
-      <!-- historial -->
-      <div class="flex w-full justify-center">
-        <div
-          class="game-container bg-white border border-gray-200 p-10 rounded-md flex flex-col gap-5 shadow-md lg:w-full"
-        >
-          <div class="flex justify-between">
-            <h1 class="font-bold text-4xl">Historial</h1>
-            <button
-              class="p-1 border rounded-md border-red-700 bg-red-500 text-white cursor-pointer hover:bg-red-700 font-bold"
-              id="reiniciar"
+            <div class="flex items-center justify-evenly w-full">
+              <div class="score flex flex-col items-center">
+                <span id="user-score" class="text-3xl text-green-500">0</span>
+                <small>Tú</small>
+              </div>
+              <div class="score flex flex-col items-center">
+                <span id="comp-score" class="text-3xl text-red-500">0</span>
+                <small>Comp</small>
+              </div>
+              <div class="flex flex-col items-center">
+                <span id="emp-score" class="text-3xl text-purple-500">0</span>
+                <small>Emp</small>
+              </div>
+            </div>
+            <div
+              class="score flex flex-col items-center border w-1/6 border-orange-400 rounded-xl bg-orange-200"
             >
-              Reiniciar
+              <span id="rom-score" class="text-3xl text-orange-500">0</span>
+              <small>rondas</small>
+            </div>
+          </div>
+          <!-- display mensage -->
+          <div
+            id="result-message"
+            class="bg-gray-50 p-2 rounded-md border border-gray-200 text-center text-2xl"
+          >
+            ¡Haz tu jugada!
+          </div>
+          <!-- btns -->
+          <div class="choices flex gap-2 justify-center flex-wrap">
+            <button
+              id="rock"
+              class="p-6 border rounded-full border-gray-500 text-4xl hover:scale-110 cursor-pointer"
+              onclick="playGame('rock')"
+            >
+              🪨
+            </button>
+            <button
+              id="paper"
+              class="p-6 border rounded-full border-gray-500 text-4xl hover:scale-110 cursor-pointer"
+              onclick="playGame('paper')"
+            >
+              📄
+            </button>
+            <button
+              id="scissors"
+              class="p-6 border rounded-full :bg-gray-500 border-gray-500 text-4xl hover:scale-110 cursor-pointer"
+              onclick="playGame('scissors')"
+            >
+              ✂️
             </button>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Ronda</th>
-                <th>Tu movimiento</th>
-                <th>Comp movimiento</th>
-                <th>Ganador</th>
-              </tr>
-            </thead>
-            <tbody id="table">
-              <!-- <tr>
-                <td>00</td>
-                <td>Piedra</td>
-                <td>Comp</td>
-              </tr> -->
-            </tbody>
-          </table>
-          <p class="text-gray-600 text-center italic bg-gray-200 rounded-2xl">
-            "Sigue hambriento, sigue alocado." -
-            <cite class="not-italic">Steve Jobs.</cite>
+
+          <p class="text-gray-500 text-center">
+            Elige tu arma para empezar el juego.
           </p>
         </div>
-      </div>
-    </main>
-    <footer class="pt-5 flex flex-col gap-4">
-      <p class="text-gray-400 text-center">
-        &copy; 2025
-        <span
-          class="bg-linear-to-l from-pink-500 to-purple-500 via-blue-500 bg-clip-text text-transparent font-bold"
-        >
-          <a href="https://www.instagram.com/bafaf03" target="_blank">
-            Bryant Facenda</a
-          > </span
-        >, Todos los derechos reservados.
-      </p>
-      <div>
-        <ul class="flex justify-center gap-5 text-gray-400">
-          <li class="flex flex-col items-center hover:text-orange-500">
-            <i class="fa-brands fa-html5"></i>
-            HTML5
-          </li>
-          <li class="flex flex-col items-center hover:text-blue-500">
-            <i class="fa-brands fa-css3-alt"></i>
-            CSS
-          </li>
-          <li class="flex flex-col items-center hover:text-yellow-500">
-            <i class="fa-brands fa-square-js"></i>
-            JavaScript
-          </li>
-          <li class="flex flex-col items-center hover:text-cyan-500">
-            <i class="fa-solid fa-code"></i>
-            Tailwingcss
-          </li>
-          <li class="flex flex-col items-center hover:text-purple-900">
-            <i class="fa-solid fa-font-awesome"></i>
-            Fontawesome
-          </li>
-        </ul>
-      </div>
-    </footer>
+        <!-- historial -->
+        <div class="flex w-full justify-center">
+          <div
+            class="game-container bg-white border border-gray-200 p-10 rounded-md flex flex-col gap-5 shadow-md md:w-full md:h-full"
+          >
+            <div class="flex justify-between">
+              <h1 class="font-bold text-4xl">Historial</h1>
+              <button
+                class="p-1 border rounded-md border-red-700 bg-red-500 text-white cursor-pointer hover:bg-red-700 font-bold"
+                id="reiniciar"
+              >
+                Reiniciar
+              </button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Ronda</th>
+                  <th>Tu movimiento</th>
+                  <th>Comp movimiento</th>
+                  <th>Ganador</th>
+                </tr>
+              </thead>
+              <tbody id="table">
+                <!-- <tr>
+                  <td>00</td>
+                  <td>Piedra</td>
+                  <td>Comp</td>
+                </tr> -->
+              </tbody>
+            </table>
+            <p class="text-gray-600 text-center italic bg-gray-200 rounded-2xl">
+              "Sigue hambriento, sigue alocado." -
+              <cite class="not-italic">Steve Jobs.</cite>
+            </p>
+          </div>
+        </div>
+      </main>
+      <footer class="pt-5 flex flex-col gap-4">
+        <p class="text-gray-400 text-center">
+          &copy; 2025
+          <span
+            class="bg-linear-to-l from-pink-500 to-purple-500 via-blue-500 bg-clip-text text-transparent font-bold"
+          >
+            <a href="https://www.instagram.com/bafaf03" target="_blank">
+              Bryant Facenda</a
+            > </span
+          >, Todos los derechos reservados.
+        </p>
+        <div>
+          <ul class="flex justify-center gap-5 text-gray-400">
+            <li class="flex flex-col items-center hover:text-orange-500">
+              <i class="fa-brands fa-html5"></i>
+              HTML5
+            </li>
+            <li class="flex flex-col items-center hover:text-blue-500">
+              <i class="fa-brands fa-css3-alt"></i>
+              CSS
+            </li>
+            <li class="flex flex-col items-center hover:text-yellow-500">
+              <i class="fa-brands fa-square-js"></i>
+              JavaScript
+            </li>
+            <li class="flex flex-col items-center hover:text-cyan-500">
+              <i class="fa-solid fa-code"></i>
+              Tailwingcss
+            </li>
+            <li class="flex flex-col items-center hover:text-purple-900">
+              <i class="fa-solid fa-font-awesome"></i>
+              Fontawesome
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
     <script src="js/main.js"></script>
     <!--   <script src="js/dark.js"></script> -->
   </body>
